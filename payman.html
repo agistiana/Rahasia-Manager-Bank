@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Form Pembelian Produk</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f8f9fa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 30px;
+    }
+    .container {
+      background: #fff;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      max-width: 500px;
+      width: 100%;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333;
+    }
+    label {
+      font-weight: bold;
+      margin-top: 10px;
+      display: block;
+      color: #444;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+    button {
+      background: #007bff;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    .total {
+      font-size: 16px;
+      font-weight: bold;
+      margin-top: 10px;
+      padding: 10px;
+      background: #f1f1f1;
+      border-radius: 8px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Form Pembelian Produk</h2>
+    <form id="orderForm">
+      <!-- Nama -->
+      <label for="name">Nama Lengkap</label>
+      <input type="text" id="name" name="name" placeholder="Masukkan nama Anda" required>
+
+      <!-- Produk -->
+      <label for="product">Pilih Produk</label>
+      <select id="product" name="product" required>
+        <option value="100000">Produk A - Rp100.000</option>
+        <option value="200000">Produk B - Rp200.000</option>
+        <option value="300000">Produk C - Rp300.000</option>
+      </select>
+
+      <!-- Jumlah -->
+      <label for="quantity">Jumlah</label>
+      <input type="number" id="quantity" name="quantity" value="1" min="1" required>
+
+      <!-- Diskon -->
+      <label for="discount">Diskon (%)</label>
+      <input type="number" id="discount" name="discount" value="0" min="0" max="100">
+
+      <!-- Pembayaran -->
+      <label for="payment">Metode Pembayaran</label>
+      <select id="payment" name="payment" required>
+        <option value="BRI">Transfer Bank BRI</option>
+        <option value="BNI">Transfer Bank BNI</option>
+        <option value="BCA">Transfer Bank BCA</option>
+        <option value="Aladin">Bank Aladin</option>
+        <option value="Seabank">SeaBank</option>
+        <option value="WebPay">Pembayaran Langsung di Website</option>
+      </select>
+
+      <!-- Total -->
+      <div class="total" id="totalPrice">Total: Rp0</div>
+
+      <button type="submit">Pesan Sekarang</button>
+    </form>
+  </div>
+
+  <script>
+    const product = document.getElementById("product");
+    const quantity = document.getElementById("quantity");
+    const discount = document.getElementById("discount");
+    const totalPrice = document.getElementById("totalPrice");
+
+    function calculateTotal() {
+      let price = parseInt(product.value);
+      let qty = parseInt(quantity.value);
+      let disc = parseInt(discount.value);
+
+      if (isNaN(price) || isNaN(qty) || isNaN(disc)) return;
+
+      let subtotal = price * qty;
+      let potongan = subtotal * (disc / 100);
+      let total = subtotal - potongan;
+
+      totalPrice.textContent = "Total: Rp" + total.toLocaleString("id-ID");
+    }
+
+    product.addEventListener("change", calculateTotal);
+    quantity.addEventListener("input", calculateTotal);
+    discount.addEventListener("input", calculateTotal);
+
+    document.getElementById("orderForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      alert("Pesanan berhasil dibuat!\n" + totalPrice.textContent);
+    });
+
+    // Hitung pertama kali
+    calculateTotal();
+  </script>
+</body>
+</html>
